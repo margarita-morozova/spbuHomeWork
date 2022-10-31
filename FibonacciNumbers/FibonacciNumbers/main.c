@@ -1,19 +1,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-unsigned long long int recursiveMethod(int currentNumber,int neededNumber, unsigned long long int theFirst, unsigned long long int theSecond)
+unsigned long long int recursiveMethod(int neededNumber)
 {
 	if (neededNumber <= 0)
 	{
 		return -1;
 	}
 
-	unsigned long long int nextFibonacciNumber = theFirst + theSecond;
-	if (currentNumber + 1 < neededNumber)
+	if (neededNumber <= 2)
 	{
-		recursiveMethod(currentNumber + 1, neededNumber, theSecond, nextFibonacciNumber);
+		return 1;
 	} else {
-		return nextFibonacciNumber;
+		return recursiveMethod(neededNumber - 1) + recursiveMethod(neededNumber - 2);
 	}
 }
 
@@ -41,22 +40,22 @@ unsigned long long int iterativeMethod(int currentNumber, int neededNumber, unsi
 
 bool theFirstTest()
 {
-	int number = 50;
-	unsigned long long int rightAnswer = 12586269025;
-	return (recursiveMethod(2, number, 1, 1) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == rightAnswer);
+	int number = 1;
+	unsigned long long int rightAnswer = 1;
+	return (recursiveMethod(number) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == rightAnswer);
 }
 
 bool theSecondTest()
 {
-	int number = 83;
-	unsigned long long int rightAnswer = 99194853094755497;
-	return (recursiveMethod(2, number, 1, 1) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == rightAnswer);
+	int number = 10;
+	unsigned long long int rightAnswer = 55;
+	return (recursiveMethod(number) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == rightAnswer);
 }
 
 bool IncorrectDataTest()
 {
 	int number = -5;
-	return (recursiveMethod(2, number, 1, 1) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == -1);
+	return (recursiveMethod(number) == iterativeMethod(2, number, 1, 1)) && (iterativeMethod(2, number, 1, 1) == -1);
 }
 
 int main()
@@ -70,17 +69,18 @@ int main()
 	if (!(theFirstTest() == theSecondTest() && theFirstTest() == IncorrectDataTest() && IncorrectDataTest() == 1))
 	{
 		printf("%d %d %d", theFirstTest(), theSecondTest(), IncorrectDataTest());
+		printf("Tests failed :c");
 		return -1;
 	}
 
 	printf("Enter the number of the needed Fibonacci number: ");
 	scanf_s("%d", &neededNumber);
 
-	printf("\nWhat method do you want to use?\nFor recusion press 0\nFor iterative method press 1\n");
+	printf("\nWhat method do you want to use?\nFor recursion press 0\nFor iterative method press 1\n(use the recursion if the number of the needed Fibonacci number is less than 37)\n");
 	scanf_s("%d", &decision);
 	while (decision != 1 && decision != 0)
 	{
-		printf("Try again\nWhat method do you want to use?\nFor recusion press 0\nFor iterative method press 1\n");
+		printf("Try again\nWhat method do you want to use?\nFor recursion press 0\nFor iterative method press 1\n(use the recursion if the number of the needed Fibonacci number is less than 37)\n");
 		scanf_s("%d", &decision);
 	}
 
@@ -88,7 +88,7 @@ int main()
 
 	if (decision == 0)
 	{
-		answer = recursiveMethod(currentNumber, neededNumber, theFirstNumber, theSecondNumber);
+		answer = recursiveMethod(neededNumber);
 	} else {
 		answer = iterativeMethod(currentNumber, neededNumber, theFirstNumber, theSecondNumber);
 	}
@@ -98,7 +98,7 @@ int main()
 		printf("You can't work with negative numbers");
 	}
 
-	printf("The answer is %llu", answer);
+	printf("Your Fibonacci number is %llu", answer);
 
 	return 0;
 }
