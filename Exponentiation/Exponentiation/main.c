@@ -74,8 +74,6 @@ bool theThirdTest()
 	return (abs(simplePower(number, power) - fastPower(number, power)) < delta) && (abs(fastPower(number, power) - rightAnswer) < delta);
 }
 
-
-
 int main()
 {
 	double number = 0;
