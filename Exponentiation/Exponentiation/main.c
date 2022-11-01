@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
 
 double simplePower(double number, int power)
 {
@@ -43,6 +44,38 @@ double fastPower(double number, int power)
 	}
 }
 
+bool theFirstTest()
+{
+	double number = 10;
+	int power = 2;
+	double rightAnswer = 100;
+	double delta = 0.00001;
+
+	return (abs(simplePower(number, power) - fastPower(number, power)) < delta) && (abs(fastPower(number, power) - rightAnswer) < delta);
+}
+
+bool theSecondTest()
+{
+	double number = 10;
+	int power = -2;
+	double rightAnswer = 0.01;
+	double delta = 0.00001;
+
+	return (abs(simplePower(number, power) - fastPower(number, power)) < delta) && (abs(fastPower(number, power) - rightAnswer) < delta);
+}
+
+bool theThirdTest()
+{
+	double number = 1000;
+	int power = 0;
+	double rightAnswer = 1;
+	double delta = 0.00001;
+
+	return (abs(simplePower(number, power) - fastPower(number, power)) < delta) && (abs(fastPower(number, power) - rightAnswer) < delta);
+}
+
+
+
 int main()
 {
 	double number = 0;
@@ -56,6 +89,12 @@ int main()
 	printf("Choose the way you want to raise your number to a power:\nFor simle way enter 0\nFor quick way enter 1\n");
 	scanf_s("%d", &choise);
 
+	if (!(theFirstTest() && theSecondTest() && theThirdTest()))
+	{
+		printf("Tests failed :c");
+		return -1;
+	}
+
 	if (power == 0)
 	{
 		answer = 1;
@@ -65,7 +104,7 @@ int main()
 		answer = fastPower(number, power);
 	}
 
-	printf("%lf", answer);
+	printf("The answer is %lf", answer);
 
 	return 0;
 }
