@@ -1,12 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int Bubble()
+int bubble(int* pointerToArray, int size)
 {
+	for (int i = 0; i < size - 1; i++)
+	{
+		for (int j = i - 1; j < size - 1; j++)
+		{
+			if (pointerToArray[j] > pointerToArray[j + 1])
+			{
+				int temporaryPlace = pointerToArray[j];
+				pointerToArray[j] = pointerToArray[j + 1];
+				pointerToArray[j + 1] = temporaryPlace;
+			}
+		}
+	}
 
+	return pointerToArray;
 }
 
-int Counting()
+int counting()
 {
 
 }
@@ -22,9 +35,14 @@ int manualFilling(int *pointerToArray, int size)
 	return pointerToArray;
 }
 
-int randomFilling()
+int randomFilling(int *pointerToArray, int size)
 {
+	for (int i = 0; i < size; i++)
+	{
+		pointerToArray[i] = rand();
+	}
 
+	return pointerToArray;
 }
 
 int main()
@@ -46,14 +64,24 @@ int main()
 	if (decision == 0)
 	{
 		manualFilling(firstArray, size);
+	} else {
+		randomFilling(firstArray, size);
 	}
 
-	
 	for (int i = 0; i < size; i++)
 	{
 		printf("%d ", firstArray[i]);
 	}
 
+	bubble(firstArray, size);
+	printf("\nSorted array: ");
+	for (int i = 0; i < size; i++)
+	{
+		printf("%d ", firstArray[i]);
+	}
+
+
+	free(firstArray);
 
 	return 0;
 }
