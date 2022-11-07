@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int bubble(int* pointerToArray, int size)
+int* bubble(int* pointerToArray, int size)
 {
 	for (int i = 0; i < size - 1; i++)
 	{
@@ -19,12 +19,41 @@ int bubble(int* pointerToArray, int size)
 	return pointerToArray;
 }
 
-int counting()
+int* counting(int* pointerToArray, int size)
 {
+	int extreme = 10000;
+	int* arrayOfNumbers = calloc(extreme, sizeof(int));
 
+	if (arrayOfNumbers == NULL)
+	{
+		printf("\nmemory is not found :c");
+		return -1;
+	}
+
+	for (int i = 0; i < size; i++)
+	{
+		arrayOfNumbers[pointerToArray[i]]++;
+	}
+
+	int index = 0;
+	while (index <= size)
+	{
+		for (int i = 0; i < extreme; i++)
+		{
+			while (arrayOfNumbers[i] > 0)
+			{
+				pointerToArray[index] = i;
+				arrayOfNumbers[i]--;
+				index++;
+			}
+		}
+		index++;
+	}
+
+	return pointerToArray;
 }
 
-int manualFilling(int *pointerToArray, int size)
+int* manualFilling(int *pointerToArray, int size)
 {
 	printf("Enter the elements fo your array:\n");
 	for (int i = 0; i < size; i++)
@@ -35,11 +64,11 @@ int manualFilling(int *pointerToArray, int size)
 	return pointerToArray;
 }
 
-int randomFilling(int *pointerToArray, int size)
+int* randomFilling(int *pointerToArray, int size)
 {
 	for (int i = 0; i < size; i++)
 	{
-		pointerToArray[i] = rand();
+		pointerToArray[i] = rand() % 10000;
 	}
 
 	return pointerToArray;
@@ -73,13 +102,12 @@ int main()
 		printf("%d ", firstArray[i]);
 	}
 
-	bubble(firstArray, size);
+	counting(firstArray, size);
 	printf("\nSorted array: ");
 	for (int i = 0; i < size; i++)
 	{
 		printf("%d ", firstArray[i]);
 	}
-
 
 	free(firstArray);
 
