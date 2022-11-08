@@ -113,6 +113,7 @@ bool firstTest()
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -131,6 +132,7 @@ bool secondTest()
 			return false;
 		}
 	}
+
 	return true;
 }
 
@@ -175,7 +177,6 @@ int main()
 
 	printf("If you want to use bubble sort, press 0\nIf you want to use counting sort press 1\n");
 	scanf_s("%d", &secondDecision);
-
 	while (secondDecision != 0 && secondDecision != 1)
 	{
 		printf("Try again\nIf you want to use bubble sort, press 0\nIf you want to use counting sort press 1\n");
@@ -196,6 +197,5 @@ int main()
 	}
 
 	free(firstArray);
-
 	return 0;
 }
