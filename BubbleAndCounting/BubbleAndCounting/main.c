@@ -10,7 +10,7 @@ int* bubble(int* pointerToArray, int size)
 {
 	for (int i = 0; i < size - 1; i++)
 	{
-		for (int j = i - 1; j < size - 1; j++)
+		for (int j = 0; j < size - 1 - i; j++)
 		{
 			if (pointerToArray[j] > pointerToArray[j + 1])
 			{
@@ -55,7 +55,7 @@ int* counting(int* pointerToArray, int size)
 
 int* manualFilling(int *pointerToArray, int size)
 {
-	printf("Enter the elements fo your array:\n");
+	printf("Enter the positive elements of your array:\n");
 	for (int i = 0; i < size; i++)
 	{
 		scanf_s("%d", &pointerToArray[i]);
@@ -100,9 +100,9 @@ double bubbleTime()
 
 bool firstTest()
 {
-	int firstTestArray[firstTestSize] = { 0, -50, 1043, -49, 2, 0, 1, 1, 50, 33 };
-	int secondTestArray[firstTestSize] = { 50, 2, 1043, -49, -50, 1, 1, 0, 0, 33 };
-	int sortedArray[firstTestSize] = { -50, -49, 0, 0, 1, 1, 2, 33, 50, 1043 };
+	int firstTestArray[firstTestSize] = { 0, 50, 1043, 49, 2, 0, 1, 1, 50, 33 };
+	int secondTestArray[firstTestSize] = { 50, 2, 1043, 49, 50, 1, 1, 0, 0, 33 };
+	int sortedArray[firstTestSize] = { 0, 0, 1, 1, 2, 33, 49, 50, 50, 1043 };
 	bubble(firstTestArray, firstTestSize);
 	counting(secondTestArray, firstTestSize);
 
@@ -118,9 +118,9 @@ bool firstTest()
 
 bool secondTest()
 {
-	int firstTestArray[secondTestSize] = { -1000, 5, 5, 1, 1};
-	int secondTestArray[secondTestSize] = { 1, 5, 1, 5, -1000};
-	int sortedArray[secondTestSize] = { -1000, 1, 1, 5, 5 };
+	int firstTestArray[secondTestSize] = { 1000, 5, 5, 1, 1};
+	int secondTestArray[secondTestSize] = { 1, 5, 1, 5, 1000};
+	int sortedArray[secondTestSize] = { 1, 1, 5, 5, 1000 };
 	bubble(firstTestArray, secondTestSize);
 	counting(secondTestArray, secondTestSize);
 
