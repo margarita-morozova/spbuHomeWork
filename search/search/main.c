@@ -3,6 +3,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#define firstTestArraySize 10
+#define secondTestArraySize 7
+#define thirdTestArraySize 10
+#define fourthTestArraySize 9
+#define fifthTestArraySize 10
+
 void qSort(int *originalArray, int size, int beginning, int ending)
 {
 	int supportElement = beginning;
@@ -15,6 +21,7 @@ void qSort(int *originalArray, int size, int beginning, int ending)
 			{
 				originalArray[j] = originalArray[j - 1];
 			}
+
 			originalArray[supportElement] = temporaryPlace;
 			++supportElement;
 		}
@@ -34,7 +41,12 @@ void qSort(int *originalArray, int size, int beginning, int ending)
 bool binarySearch(int *sortedArray, int beginning, int ending, int number)
 {
 	int middle = beginning + (ending - beginning) / 2;
-	if (beginning < ending) {
+	if (beginning == ending)
+	{
+		middle = beginning;
+	}
+
+	if (beginning <= ending) {
 		if (sortedArray[middle] == number)
 		{
 			return true;
@@ -61,14 +73,111 @@ int* randomFilling(int* pointerToArray, int size)
 	return pointerToArray;
 }
 
+bool firstTestSorting()
+{
+	int testArray[firstTestArraySize] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int rightArray[firstTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	qSort(testArray, firstTestArraySize, 0, firstTestArraySize - 1);
+	for (int i = 0; i < firstTestArraySize; i++)
+	{
+		if (testArray[i] != rightArray[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool secondTestSorting()
+{
+	int testArray[secondTestArraySize] = {4, 6, 3, 5, 2, 1, 7};
+	int rightArray[secondTestArraySize] = { 1, 2, 3, 4, 5, 6, 7};
+	qSort(testArray, secondTestArraySize, 0, secondTestArraySize - 1);
+	for (int i = 0; i < secondTestArraySize; i++)
+	{
+		if (testArray[i] != rightArray[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool firstTestSearching()
+{
+	int testArray[thirdTestArraySize] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int neededNumber = 9;
+	if (binarySearch(testArray, 0, thirdTestArraySize - 1, neededNumber))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool secondTestSearching()
+{
+	int testArray[fourthTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8};
+	int neededNumber = 9;
+	if (!binarySearch(testArray, 0, fourthTestArraySize - 1, neededNumber))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool testOfBothFunctions()
+{
+	int testArray[fifthTestArraySize] = {8, 3, 2, 1, 4, 5, 6, 7, 0, 9};
+	int rightArray[fifthTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int neededNumber = 9;
+	qSort(testArray, fifthTestArraySize, 0, fifthTestArraySize - 1);
+	for (int i = 0; i < fifthTestArraySize; i++)
+	{
+		if (testArray[i] != rightArray[i])
+		{
+			return false;
+		}
+	}
+
+	if (!binarySearch(testArray, 0, fifthTestArraySize, neededNumber))
+	{
+		return false;
+	}
+
+	return true;
+}
+
 int main()
 {
+	if (!firstTestSorting() || !secondTestSorting() || !firstTestSearching() || !secondTestSearching() || !testOfBothFunctions())
+	{
+		printf("There are some mistakes in the programm :c");
+		return -1;
+	}
+
 	int sizeOfTheArray = 0;
 	int numberOfIntegers = 0;
 	printf("Enter the size of the array: ");
 	scanf_s("%d", &sizeOfTheArray);
+	while (sizeOfTheArray <= 0)
+	{
+		printf("The size of the array has to be positive\n");
+		printf("Enter the size of the array: ");
+		scanf_s("%d", &sizeOfTheArray);
+	}
+
 	printf("Enter the number of integers: ");
 	scanf_s("%d", &numberOfIntegers);
+	while (numberOfIntegers <= 0)
+	{
+		printf("The number of integers has to be positive\n");
+		printf("Enter the number of integers: ");
+		scanf_s("%d", &numberOfIntegers);
+	}
 
 	int* firstArray = (int*)calloc(sizeOfTheArray, sizeof(int));
 	if (firstArray == NULL)
