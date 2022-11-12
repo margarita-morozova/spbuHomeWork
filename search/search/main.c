@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
 
 void qsort(int *originalArray, int size, int beginning, int ending)
 {
@@ -34,14 +36,37 @@ void qsort(int *originalArray, int size, int beginning, int ending)
 	}
 }
 
+bool binarySearch(int *sortedArray, int beginning, int ending, int number)
+{
+	int middle = beginning + (ending - beginning) / 2;
+	if (beginning < ending) {
+		if (sortedArray[middle] == number)
+		{
+			return true;
+		}
+
+		if (sortedArray[middle] > number)
+		{
+			return binarySearch(sortedArray, beginning, middle - 1, number);
+		}
+
+		return binarySearch(sortedArray, middle + 1, ending, number);
+	}
+
+	return false;
+}
+
 int main()
 {
-	int mas[10] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-	qsort(mas, 10, 0, 9);
-
-	for (int i = 0; i < 10; i++)
+	int mas[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	if (binarySearch(mas, 0, 9, 4))
 	{
-		printf("%d ", mas[i]);
+		printf("Yes\n");
+	}
+
+	if (!binarySearch(mas, 0, 9, 10))
+	{
+		printf("No\n");
 	}
 
 	return 0;
