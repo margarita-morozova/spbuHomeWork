@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
-void qsort(int *originalArray, int size, int beginning, int ending)
+void qSort(int *originalArray, int size, int beginning, int ending)
 {
 	int supportElement = beginning;
 	for (int i = beginning + 1; i < ending + 1; i++)
@@ -19,20 +20,14 @@ void qsort(int *originalArray, int size, int beginning, int ending)
 		}
 	}
 
-	printf("\n");
-	for (int i = 0; i < 10; i++)
-	{
-		printf("%d ", originalArray[i]);
-	}
-
 	if (supportElement - beginning > 0)
 	{
-		qsort(originalArray, supportElement - beginning, beginning, supportElement - 1);
+		qSort(originalArray, supportElement - beginning, beginning, supportElement - 1);
 	}
 
 	if (ending - supportElement > 0)
 	{
-		qsort(originalArray, ending - supportElement, supportElement + 1, ending);
+		qSort(originalArray, ending - supportElement, supportElement + 1, ending);
 	}
 }
 
@@ -56,17 +51,62 @@ bool binarySearch(int *sortedArray, int beginning, int ending, int number)
 	return false;
 }
 
-int main()
+int* randomFilling(int* pointerToArray, int size)
 {
-	int mas[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	if (binarySearch(mas, 0, 9, 4))
+	for (int i = 0; i < size; i++)
 	{
-		printf("Yes\n");
+		pointerToArray[i] = rand() % 10000;
 	}
 
-	if (!binarySearch(mas, 0, 9, 10))
+	return pointerToArray;
+}
+
+int main()
+{
+	int sizeOfTheArray = 0;
+	int numberOfIntegers = 0;
+	printf("Enter the size of the array: ");
+	scanf_s("%d", &sizeOfTheArray);
+	printf("Enter the number of integers: ");
+	scanf_s("%d", &numberOfIntegers);
+
+	int* firstArray = (int*)calloc(sizeOfTheArray, sizeof(int));
+	if (firstArray == NULL)
 	{
-		printf("No\n");
+		printf("\nmemory is not found :c");
+		return -1;
+	}
+
+	int* arrayOfIntegers = (int*)calloc(numberOfIntegers, sizeof(int));
+	if (arrayOfIntegers == NULL)
+	{
+		printf("\nmemory is not found :c");
+		return -1;
+	}
+
+	randomFilling(firstArray, sizeOfTheArray);
+	randomFilling(arrayOfIntegers, numberOfIntegers);
+	printf("Your array is: ");
+	for (int i = 0; i < sizeOfTheArray; i++)
+	{
+		printf("%d ", firstArray[i]);
+	}
+
+	printf("\nYour numbers are: ");
+	for (int i = 0; i < numberOfIntegers; i++)
+	{
+		printf("%d ", arrayOfIntegers[i]);
+	}
+
+	qSort(firstArray, sizeOfTheArray, 0, sizeOfTheArray - 1);
+	for (int i = 0; i < numberOfIntegers; i++)
+	{
+		if (binarySearch(firstArray, 0, sizeOfTheArray - 1, arrayOfIntegers[i]))
+		{
+			printf("\n%d is in array", arrayOfIntegers[i]);
+		} else {
+			printf("\n%d isn't in array", arrayOfIntegers[i]);
+		}
 	}
 
 	return 0;
