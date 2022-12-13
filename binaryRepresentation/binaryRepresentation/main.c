@@ -22,6 +22,20 @@ void printBin(int* number) {
 	}
 }
 
+void binSum(int* firstNumber, int* secondNumber, int* sum) {
+	int addToPreviousDigit = 0;
+	for (int i = INT_SIZE - 1; i >= 0; i--) {
+		sum[i] = (firstNumber[i] + secondNumber[i] + addToPreviousDigit) % 2;
+		if (firstNumber[i] + secondNumber[i] + addToPreviousDigit > 1) {
+			addToPreviousDigit = 1;
+		}
+		else {
+			addToPreviousDigit = 0;
+		}
+	}
+	printBin(sum);
+}
+
 int main() {
 	setlocale(LC_ALL, "ru - RU");
 	system("chcp 1251");
@@ -46,7 +60,9 @@ int main() {
 	printBin(binFirstNumber);
 	printf("\nYour second number is ");
 	printBin(binSecondNumber);
-
+	int* sum = calloc(INT_SIZE, sizeof(int));
+	printf("\nYour sum number is ");
+	binSum(binFirstNumber, binSecondNumber, sum);
 
 	return 0;
 }
