@@ -1,4 +1,5 @@
 #include "binaryRepresentation.h"
+#include "tests.h"
 
 #include <stdio.h>
 #include <locale.h>
@@ -6,11 +7,16 @@
 #include <math.h>
 
 #define INT_SIZE 8
-#define TWO_POWER_EIGHT 256;
+#define TWO_POWER_EIGHT 256
 
 int main() {
 	setlocale(LC_ALL, "ru - RU");
 	system("chcp 1251");
+
+	if (!convertToBinTest() || !firstSumTest() || !secondSumTest() || !thirdSumTest() || !convertToDecTest()) {
+		printf("Программа содержит ошибки :с");
+		return -1;
+	}
 	
 	int firstNumber = 0;
 	int secondNumber = 0;
@@ -35,6 +41,7 @@ int main() {
 	int* sum = calloc(INT_SIZE, sizeof(int));
 	printf("\nСумма ваших чисел в двоичной системе счисления: ");
 	binSum(binFirstNumber, binSecondNumber, sum);
+	printBin(sum);
 	int decSum = convertToDec(sum);
 	printf("\nДесятичное представление суммы: %d", decSum);
 

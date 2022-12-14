@@ -21,9 +21,15 @@
     <ClCompile Include="binaryRepresentation.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="tests.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="binaryRepresentation.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="tests.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
