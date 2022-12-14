@@ -33,7 +33,38 @@ void binSum(int* firstNumber, int* secondNumber, int* sum) {
 			addToPreviousDigit = 0;
 		}
 	}
+	if (sum[0] == 1) {
+		if (sum[INT_SIZE - 1] == 1) {
+			sum[INT_SIZE - 1] = 0;
+		} else {
+			int index = INT_SIZE - 1;
+			while (sum[index] != 1) {
+				index--;
+			}
+
+			for (int i = index; i < INT_SIZE - 1; i++) {
+				sum[i] ^= 1;
+			}
+			sum[INT_SIZE - 1] = 1;
+		}
+	}
 	printBin(sum);
+}
+
+int convertToDec(int* number) {
+	int sum = 0;
+	for (int i = INT_SIZE - 1; i >= 0; i--) {
+		if (number[i] == 1)
+		{
+			sum += pow(2, INT_SIZE - 1 - i);
+		}
+	}
+	if (sum > 127) {
+		sum -= TWO_POWER_EIGHT;
+		sum += 1;
+	}
+
+	return sum;
 }
 
 int main() {
@@ -61,8 +92,10 @@ int main() {
 	printf("\nYour second number is ");
 	printBin(binSecondNumber);
 	int* sum = calloc(INT_SIZE, sizeof(int));
-	printf("\nYour sum number is ");
+	printf("\nThe binary sum is ");
 	binSum(binFirstNumber, binSecondNumber, sum);
+	int decSum = convertToDec(sum);
+	printf("\nThe decimal sum is %d", decSum);
 
 	return 0;
 }
