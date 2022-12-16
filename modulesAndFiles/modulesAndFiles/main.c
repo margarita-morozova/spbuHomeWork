@@ -32,16 +32,6 @@ int theMostFrequentElement(int* pointerToArray, int size)
 	return neededElement;
 }
 
-int* randomFilling(int* pointerToArray, int size)
-{
-	for (int i = 0; i < size; i++)
-	{
-		pointerToArray[i] = rand() % 100;
-	}
-
-	return pointerToArray;
-}
-
 bool firstTest()
 {
 	int testArray[firstTestArraySize] = { 5, 5, 3, 4, 2, 8, 8, 9, 8, 0 };
@@ -84,14 +74,21 @@ int main()
 		return -1;
 	}
 
+	FILE* file;
+	fopen_s(&file, "..\\testFile.txt", "r");
+	if (file == NULL) {
+		printf("file not found!");
+		return 0;
+	}
+
+	fseek(file, 0, SEEK_SET);
 	int size = 0;
-	printf("Enter the size of the array: ");
-	scanf_s("%d", &size);
-	while (size < 1)
+	fscanf_s(file, "%d", &size);
+
+	if (size < 1)
 	{
-		printf("The size of the array has to be positive number\n");
-		printf("Enter the size of the array: ");
-		scanf_s("%d", &size);
+		printf("\nThe wrong data in the file\n");
+		return -1;
 	}
 
 	int* firstArray = (int*)calloc(size, sizeof(int));
@@ -101,10 +98,12 @@ int main()
 		return -1;
 	}
 
-	randomFilling(firstArray, size);
+	for (int i = 0; i < size; i++) {
+		fscanf_s(file, "%d", &firstArray[i]);
+	}
+
 	printf("Your array: ");
-	for (int i = 0; i < size; i++)
-	{
+	for (int i = 0; i < size; i++) {
 		printf("%d ", firstArray[i]);
 	}
 
