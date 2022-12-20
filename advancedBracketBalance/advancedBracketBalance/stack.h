@@ -4,10 +4,10 @@
 typedef struct Stack Stack;
 
 // add one element to stack
-int push(Stack* stack, int element);
+char push(Stack* stack, char element);
 
 // take one element from stack
-int pop(Stack* stack);
+char pop(Stack* stack);
 
 // is stack empty?
 bool isEmpty(Stack* stack);
@@ -19,4 +19,4 @@ Stack* createStack(void);
 void deleteStack(Stack* stack);
 
 // to look at the first element of stack
-int top(Stack* stack);
+char top(Stack* stack);

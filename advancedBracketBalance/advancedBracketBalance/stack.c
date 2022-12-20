@@ -3,9 +3,10 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct {
-    int value;
+    char value;
     struct Node* next;
 }Node;
 
@@ -13,7 +14,7 @@ struct Stack {
     Node* head;
 };
 
-int push(Stack* stack, int value) {
+char push(Stack* stack, char value) {
     Node* temporary = malloc(sizeof(Node));
     if (temporary == NULL) {
         printf("No place for the value");
@@ -30,12 +31,12 @@ bool isEmpty(Stack* stack) {
     return stack->head == NULL;
 }
 
-int pop(Stack* stack) {
+char pop(Stack* stack) {
     if (isEmpty(stack)) {
         return '0';
     }
 
-    int neededValue = stack->head->value;
+    char neededValue = stack->head->value;
     Node* next = stack->head->next;
     free(stack->head);
     stack->head = next;
@@ -50,12 +51,16 @@ void deleteStack(Stack* stack) {
     free(stack);
 }
 
-int top(Stack* stack) {
+char top(Stack* stack) {
     return stack->head->value;
 }
 
 Stack* createStack() {
     Stack* stack = malloc(sizeof(Stack));
+    if (stack == NULL) {
+        printf("No place for the stack");
+        exit(-2);
+    }
     stack->head = NULL;
     return stack;
 }
