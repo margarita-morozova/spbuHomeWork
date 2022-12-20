@@ -1,3 +1,5 @@
+#include "stack.h"
+
 #include <stdio.h>
 #include <malloc.h>
 #include <stdbool.h>
@@ -7,9 +9,9 @@ typedef struct {
     struct Node *next;
 }Node;
 
-typedef struct{
+struct Stack{
     Node* head;
-}Stack;
+};
 
 int push(Stack* stack, int value) {
     Node* temporary = malloc(sizeof(Node));
@@ -24,7 +26,7 @@ int push(Stack* stack, int value) {
     return 0;
 }
 
-_Bool isEmpty(Stack* stack) {
+bool isEmpty(Stack* stack) {
     return stack->head == NULL;
 }
 

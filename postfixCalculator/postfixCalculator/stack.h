@@ -3,14 +3,20 @@
 
 typedef struct Stack Stack;
 
-int push(Stack* stack, char element); // add one element to stack
+// add one element to stack
+int push(Stack* stack, int element);
 
-char pop(Stack* stack, int* errorCode); // take one element from stack
+// take one element from stack
+int pop(Stack* stack);
 
-bool isEmpty(Stack* stack); // is stack empty?
+// is stack empty?
+bool isEmpty(Stack* stack); 
 
-Stack* createStack(void); // create void stack
+// create void stack
+Stack* createStack(void); 
 
-void deleteStack(Stack* stack); // delete the whole stack
+// delete the whole stack
+void deleteStack(Stack* stack);
 
-char top(Stack* stack); // to look at the first element of stack
+// to look at the first element of stack
+int top(Stack* stack); 
