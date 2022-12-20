@@ -46,6 +46,7 @@ void deleteStack(Stack* stack) {
     while (!isEmpty(stack)) {
         pop(stack);
     }
+
     free(stack);
 }
 

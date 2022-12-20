@@ -14,8 +14,7 @@ int evaluateExpression(char expression[], int length, Stack* stack, int* errorCo
         bool isInSet = (symbol >= '0' && symbol <= '9');
         if (isInSet) {
             push(stack, symbol - '0');
-        }
-        else {
+        } else {
             if (isEmpty(stack)) {
                 printf("\nYou didn't add number");
                 *errorCode = -1;
@@ -43,14 +42,14 @@ int evaluateExpression(char expression[], int length, Stack* stack, int* errorCo
             }
             else if (symbol == '+') {
                 push(stack, secondNumber + firstNumber);
-            }
-            else {
+            } else {
                 *errorCode = -3;
                 deleteStack(stack);
                 return 0;
             }
         }
     }
+
     return pop(stack);
 }
 
