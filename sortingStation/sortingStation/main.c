@@ -2,9 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <stdbool.h>
-#include <string.h>
 
 #define FIRST_TEST_SIZE 7
 #define SECOND_TEST_SIZE 3
