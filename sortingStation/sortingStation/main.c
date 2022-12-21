@@ -68,7 +68,7 @@ bool firstTest() {
 	char expression[FIRST_TEST_SIZE] = "(1+1)*2";
 	Stack* stack = createStack();
 	char answer[FIRST_TEST_SIZE] = "0000000";
-	char rightAnswer[5] = "11+2*";
+	char rightAnswer[FIRST_TEST_SIZE - 2] = "11+2*";
 	int amountOfBrackets = 0;
 	int result = sortingStation(expression, answer, FIRST_TEST_SIZE, &amountOfBrackets, stack);
 	for (int i = 0; i < FIRST_TEST_SIZE - amountOfBrackets; i++) {
@@ -84,7 +84,7 @@ bool secondTest() {
 	char expression[SECOND_TEST_SIZE] = "2-1";
 	Stack* stack = createStack();
 	char answer[SECOND_TEST_SIZE] = "000";
-	char rightAnswer[5] = "21-";
+	char rightAnswer[SECOND_TEST_SIZE] = "21-";
 	int amountOfBrackets = 0;
 	int result = sortingStation(expression, answer, SECOND_TEST_SIZE, &amountOfBrackets, stack);
 	for (int i = 0; i < SECOND_TEST_SIZE - amountOfBrackets; i++) {
