@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void qSort(int* originalArray, int size, int beginning, int ending) {
+void qSortImplementation(int* originalArray, int beginning, int ending) {
 	int supportElement = beginning;
 	for (int i = beginning + 1; i < ending + 1; i++) {
 		if (originalArray[supportElement] > originalArray[i]) {
@@ -15,10 +15,14 @@ void qSort(int* originalArray, int size, int beginning, int ending) {
 	}
 
 	if (supportElement - beginning > 0) {
-		qSort(originalArray, supportElement - beginning, beginning, supportElement - 1);
+		qSortImplementation(originalArray, beginning, supportElement - 1);
 	}
 
 	if (ending - supportElement > 0) {
-		qSort(originalArray, ending - supportElement, supportElement + 1, ending);
+		qSortImplementation(originalArray, supportElement + 1, ending);
 	}
+}
+
+void qSort(int* originalArray, int size) {
+	qSortImplementation(originalArray, 0, size - 1);
 }
