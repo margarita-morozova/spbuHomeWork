@@ -2,151 +2,136 @@
 #include <malloc.h>
 #include <stdbool.h>
 
-
-int insertionSort(int originalArray[], int arraySize, int beginning, int ending)
-{
-
-	for (int i = beginning; i <= ending; i++)
-	{
-		for (int j = i; j >= beginning; j--)
-		{
-			if (originalArray[j] < originalArray[j - 1])
-			{
-				int temporaryPlace = 0;
-				temporaryPlace = originalArray[j];
+int insertionSort(int originalArray[], int beginning, int ending) {
+	for (int i = beginning; i <= ending; i++) {
+		for (int j = i; j >= beginning; j--) {
+			if (originalArray[j] < originalArray[j - 1]) {
+				int temporaryPlace = originalArray[j];
 				originalArray[j] = originalArray[j - 1];
 				originalArray[j - 1] = temporaryPlace;
 			}
 		}
 	}
-
 }
 
-void qsort(int originalArray[], int size, int beginning, int ending)
-{
+void qsort(int originalArray[], int beginning, int ending) {
 	int supportElement = beginning;
-	for (int i = 1; i < size; i++)
-	{
-		if (originalArray[supportElement] >= originalArray[i])
-		{
-			int temporaryPlace = originalArray[i];
-			for (int j = i; j >= supportElement; j--)
-			{
-				originalArray[j] = originalArray[j - 1];
+
+	if (ending - beginning < 10) {
+		insertionSort(originalArray, beginning, ending);
+		return;
+	}
+	else {
+		for (int i = beginning + 1; i <= ending; i++) {
+			if (originalArray[supportElement] >= originalArray[i]) {
+				int temporaryPlace = originalArray[i];
+				for (int j = i; j >= supportElement; j--) {
+					originalArray[j] = originalArray[j - 1];
+				}
+
+				originalArray[supportElement] = temporaryPlace;
+				++supportElement;
 			}
-			originalArray[supportElement] = temporaryPlace;
-			++supportElement;
 		}
 	}
 
-	if (supportElement - beginning >= 10)
-	{
-		qsort(originalArray, supportElement - beginning, beginning, supportElement - 1);
-	}
-	else {
-		insertionSort(originalArray, supportElement - beginning, beginning, supportElement - 1);
-	}
-
-	if (ending - supportElement >= 10)
-	{
-		qsort(originalArray, ending - supportElement, supportElement + 1, ending);
-	}
-	else {
-		insertionSort(originalArray, ending - supportElement, supportElement + 1, ending);
-	}
+	qsort(originalArray, beginning, supportElement);
+	qsort(originalArray, supportElement, ending);
 }
 
-void theFirstTest()
-{
+bool theFirstTest() {
 	int testArray[15] = { 6, 3, 5, 9, 3, 7, 4, 6, 8, 2, 5, 0, 10, -5, -8 };
-	qsort(testArray, 15, 0, 14);
-
-	for (int i = 0; i < 15; i++)
-	{
-		printf("%d ", testArray[i]);
+	qsort(testArray, 0, 14);
+	int sortedArray[15] = { -8, -5 , 0, 2, 3, 3, 4, 5, 5, 6, 6, 7, 8, 9, 10 };
+	for (int i = 0; i < 15; i++) {
+		if (testArray[i] != sortedArray[i]) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void theSecondTest()
-{
+bool theSecondTest() {
 	int testArray[10] = { 3, 6, -4, -5, 2, 100, 76, 2, 10, 6 };
-	qsort(testArray, 10, 0, 9);
-
-	for (int i = 0; i < 10; i++)
-	{
-		printf("%d ", testArray[i]);
+	qsort(testArray, 0, 9);
+	int sortedArray[10] = { -5, -4, 2, 2, 3, 6, 6, 10, 76, 100 };
+	for (int i = 0; i < 10; i++) {
+		if (testArray[i] != sortedArray[i]) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void theThirdTest()
-{
+bool theThirdTest() {
 	int testArray[10] = { 1, 2, 1, 2, 1, 2, 1, 2, 1, 2 };
-	qsort(testArray, 10, 0, 9);
-
-	for (int i = 0; i < 10; i++)
-	{
-		printf("%d ", testArray[i]);
+	qsort(testArray, 0, 9);
+	int sortedArray[10] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2 };
+	for (int i = 0; i < 10; i++) {
+		if (testArray[i] != sortedArray[i]) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void theFourthTest()
-{
+bool theFourthTest() {
 	int testArray[13] = { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-	qsort(testArray, 13, 0, 12);
-
-	for (int i = 0; i < 13; i++)
-	{
-		printf("%d ", testArray[i]);
+	qsort(testArray, 0, 12);
+	int sortedArray[13] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+	for (int i = 0; i < 13; i++) {
+		if (testArray[i] != sortedArray[i]) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void theFifthTest()
-{
+bool theFifthTest() {
 	int testArray[9] = { 13, 12, 11, 10, 9, 8, 7, 6, 5 };
-	qsort(testArray, 9, 0, 8);
-
-	for (int i = 0; i < 9; i++)
-	{
-		printf("%d ", testArray[i]);
+	qsort(testArray, 0, 8);
+	int sortedArray[9] = { 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+	for (int i = 0; i < 9; i++) {
+		if (testArray[i] != sortedArray[i]) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-int main()
-{
-	int* originalArray;
+int main() {
+	if (!theFirstTest() || !theSecondTest() || !theThirdTest() || !theFourthTest() || !theFirstTest()) {
+		printf("There are some mistakes :c");
+		return -1;
+	}
+
 	int arraySize = 0;
 	printf("Enter the size of the array: ");
 	scanf_s("%d", &arraySize);
 	int beginning = 0;
 	int ending = arraySize - 1;
-	originalArray = (int*)malloc(arraySize * sizeof(int));
+	int *originalArray = (int*)malloc(arraySize * sizeof(int));
 
-	if (originalArray == NULL)
-	{
-		printf(":(");
+	if (originalArray == NULL) {
+		printf("There are some problems with memory allocation");
 		return -1;
 	}
 
 	printf("Fill the array: ");
-	for (int i = 0; i < arraySize; i++)
-	{
+	for (int i = 0; i < arraySize; i++) {
 		scanf_s("%d", &originalArray[i]);
 	}
 
-	if (arraySize < 10)
-	{
-		insertionSort(originalArray, arraySize, beginning, ending);
-	}
-	else {
-		qsort(originalArray, arraySize, beginning, ending);
-	}
-
-	for (int i = 0; i < arraySize; i++)
-	{
+	qsort(originalArray, beginning, ending);
+	for (int i = 0; i < arraySize; i++) {
 		printf("%d ", originalArray[i]);
 	}
 
 	free(originalArray);
-
 	return 0;
 }
