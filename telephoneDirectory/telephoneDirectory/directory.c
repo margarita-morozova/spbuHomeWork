@@ -4,64 +4,76 @@
 #include <stdbool.h>
 
 #define MAX_LEN_NAME 100
-#define PHONE_LENGHT 18
+#define PHONE_LENGTH 18
 #define YOUR_FILE "..\\directory.txt"
 
 typedef struct {
 	char name[MAX_LEN_NAME];
-	char phone[PHONE_LENGHT];
+	char phone[PHONE_LENGTH];
 } PhoneBookEntry;
 
 int newEntry(PhoneBookEntry* book, int numberOfNewEntries, int numberOfFilesEntries) {
 	int index = numberOfNewEntries + numberOfFilesEntries;
-	char surname[MAX_LEN_NAME];
+	char surname[MAX_LEN_NAME] = {'\0'};
 	printf("\nEnter the name: ");
-	scanf_s("%s", book[index].name, (unsigned)_countof(book[index].name));
+	scanf_s("%s", book[index].name, (unsigned)sizeof(book[index].name));
 	printf("\nEnter the surname: ");
-	scanf_s("%s", &surname, (unsigned)_countof(surname));
+	scanf_s("%s", &surname, (unsigned)sizeof(surname));
 	strcat_s(book[index].name, MAX_LEN_NAME, " ");
 	strcat_s(book[index].name, MAX_LEN_NAME, surname);
+	strcat_s(book[index].name, MAX_LEN_NAME, "\n");
 	printf("\nEnter the phone number: ");
-	scanf_s("%s", book[index].phone, (unsigned)_countof(book[index].phone));
+	scanf_s("%s", book[index].phone, (unsigned)sizeof(book[index].phone));
 	return numberOfNewEntries + 1;
 }
 
 void printAllEntries(PhoneBookEntry* book, int numberOfNewEntries, int numberOfFilesEntries) {
 	printf("Your phone book now is:\n");
-	for (int i = 0; i < numberOfFilesEntries; i++) {
+	for (int i = 0; i < numberOfFilesEntries + numberOfNewEntries; i++) {
 		printf("%s %s\n", book[i].name, book[i].phone);
-	}
-	for (int i = numberOfFilesEntries; i < numberOfFilesEntries + numberOfNewEntries; i++) {
-		printf("\n%s\n %s\n", book[i].name, book[i].phone);
 	}
 }
 
 char* findPhone(PhoneBookEntry* book, char* yourName, int numberOfNewEntries, int numberOfFilesEntries) {
+	bool flag = true;
 	for (int i = 0; i < numberOfNewEntries + numberOfFilesEntries; i++) {
-		for (int j = 0; j < strlen(yourName); j++) {
+		int lenName = strlen(yourName);
+		for (int j = 0; j < lenName; j++) {
 			if (yourName[j] != book[i].name[j]) {
+				flag = false;
 				break;
-			}
-			else {
-				return book[i].phone;
+			} else {
+				flag = true;
 			}
 		}
+
+		if (flag) {
+			return book[i].phone;
+		}
 	}
-	printf("There is no person with this name.");
+
+	printf("There is no person with this name.\n");
 	return "";
 }
 
 char* findName(PhoneBookEntry* book, char* yourPhone, int numberOfNewEntries, int numberOfFilesEntries) {
+	bool flag = true;
 	for (int i = 0; i < numberOfNewEntries + numberOfFilesEntries; i++) {
 		for (int j = 0; j < strlen(yourPhone); j++) {
 			if (yourPhone[j] != book[i].phone[j]) {
+				flag = false;
 				break;
 			}
 			else {
-				return book[i].name;
+				flag = true;
 			}
 		}
+
+		if (flag) {
+			return book[i].name;
+		}
 	}
-	printf("There is no person with this phone number.");
+
+	printf("There is no person with this phone number.\n");
 	return "";
 }
