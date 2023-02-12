@@ -8,7 +8,7 @@
 typedef struct {
     char value;
     struct Node* next;
-}Node;
+} Node;
 
 struct Stack {
     Node* head;
@@ -17,7 +17,6 @@ struct Stack {
 char push(Stack* stack, char value) {
     Node* temporary = malloc(sizeof(Node));
     if (temporary == NULL) {
-        printf("No place for the value");
         return -1;
     }
 
@@ -31,9 +30,10 @@ bool isEmpty(Stack* stack) {
     return stack->head == NULL;
 }
 
-char pop(Stack* stack) {
+char pop(Stack* stack, int* errorCode) {
     if (isEmpty(stack)) {
-        return '0';
+        *errorCode = -1;
+        return ' ';
     }
 
     char neededValue = stack->head->value;
@@ -43,23 +43,27 @@ char pop(Stack* stack) {
     return neededValue;
 }
 
-void deleteStack(Stack* stack) {
+void deleteStack(Stack* stack, int* errorCode) {
     while (!isEmpty(stack)) {
-        pop(stack);
+        pop(stack, &errorCode);
     }
 
     free(stack);
 }
 
-char top(Stack* stack) {
+char top(Stack* stack, int *errorCode) {
+    if (isEmpty(stack)) {
+        *errorCode = -1;
+        return ' ';
+    }
     return stack->head->value;
 }
 
-Stack* createStack() {
+Stack* createStack(int* errorCode) {
     Stack* stack = malloc(sizeof(Stack));
     if (stack == NULL) {
-        printf("No place for the stack");
-        exit(-2);
+        *errorCode = -1;
+        return NULL;
     }
     stack->head = NULL;
     return stack;

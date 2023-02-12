@@ -2,12 +2,14 @@
 
 #include <stdio.h>
 #include <malloc.h>
-
+#include <string.h>
 
 #define FIRST_TEST_LENGTH 6
 #define SECOND_TEST_LENGTH 7
+#define MAX_LENGTH 101
 
-int evaluateExpression(char expression[], int length, Stack* stack) {
+int evaluateExpression(char expression[], int length, int *errorCode) {
+    Stack* stack = createStack(&errorCode);
     for (int i = 0; i < length; i++) {
         char element = expression[i];
         if (element == '{' || element == '(' || element == '[') {
@@ -15,49 +17,53 @@ int evaluateExpression(char expression[], int length, Stack* stack) {
         }
         else if (element == '}' || element == ')' || element == ']') {
             if (isEmpty(stack)) {
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return -1;
             }
 
-            char previousElement = pop(stack);
+            char previousElement = pop(stack, &errorCode);
+            if (*errorCode != 0) {
+                return -1;
+            }
+
             if (previousElement == '(' && element != ')') {
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return -1;
             }
             else if (previousElement == '{' && element != '}') {
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return -1;
             }
             else if (previousElement == '[' && element != ']') {
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return -1;
             }
         }
         else {
-            deleteStack(stack);
+            deleteStack(stack, &errorCode);
             return -2;
         }
     }
 
     if (!isEmpty(stack)) {
-        deleteStack(stack);
+        deleteStack(stack, &errorCode);
         return -1;
     }
 
-    deleteStack(stack);
+    deleteStack(stack, &errorCode);
     return 0;
 }
 
 bool rightBalanceTest() {
-    Stack* stack = createStack();
-    char expression[FIRST_TEST_LENGTH + 1] = "({[]})";
-    return (evaluateExpression(expression, FIRST_TEST_LENGTH, stack) == 0);
+    int errorCode = 0;
+    char expression[FIRST_TEST_LENGTH + 1] = "({[]})\0";
+    return (evaluateExpression(expression, FIRST_TEST_LENGTH, &errorCode) == 0);
 }
 
 bool wrongBalanceTest() {
-    Stack* stack = createStack();
-    char expression[SECOND_TEST_LENGTH + 1] = "(())[]{";
-    return (evaluateExpression(expression, SECOND_TEST_LENGTH, stack) != 0);
+    char expression[SECOND_TEST_LENGTH + 1] = "(())[]{\0";
+    int errorCode = 0;
+    return (evaluateExpression(expression, SECOND_TEST_LENGTH, &errorCode) != 0);
 }
 
 int main() {
@@ -65,15 +71,12 @@ int main() {
         printf("There are some problems in the programm :c");
         return -1;
     }
-
-    int length = 0;
-    Stack* stack = createStack();
-    printf("Enter the number of brackets: ");
-    scanf_s("%d", &length);
-    char* expression = (char*)malloc(length * sizeof(char) + 1);
-    printf("\nEnter the a set of brackets without spaces:");
-    scanf_s("%s", expression, (unsigned)sizeof(expression) * length);
-    int result = evaluateExpression(expression, length, stack);
+    int errorCode = 0;
+    char expression[MAX_LENGTH] = "";
+    printf("Enter the expression: ");
+    fgets(expression, MAX_LENGTH, stdin);
+    int length = strlen(expression) - 1;
+    int result = evaluateExpression(expression, length, &errorCode);
     if (result == -1) {
         printf("Wrong bracket balance");
     }
