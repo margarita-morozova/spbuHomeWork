@@ -1,16 +1,27 @@
 #include "stack.h"
 
 #include <stdio.h>
-#include <malloc.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
+#define MAX_LENGTH 101
 #define WRONG_TEST_SIZE 6
 #define FIRST_TEST_SIZE 10
 #define SECOND_TEST_SIZE 8
 
-int evaluateExpression(char expression[], int length, Stack* stack, int* errorCode) {
+int evaluateExpression(char expression[], int length, int* errorCode) {
+    Stack* stack = createStack(&errorCode);
+    if (*errorCode != 0) {
+        printf("There are problems with memory allocation");
+        return -1;
+    }
+
     for (int i = 0; i < length; i++) {
         char symbol = expression[i];
+        if (symbol == ' ') {
+            continue;
+        }
         bool isInSet = (symbol >= '0' && symbol <= '9');
         if (isInSet) {
             push(stack, symbol - '0');
@@ -18,65 +29,80 @@ int evaluateExpression(char expression[], int length, Stack* stack, int* errorCo
             if (isEmpty(stack)) {
                 printf("\nYou didn't add number");
                 *errorCode = -1;
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return 0;
             }
 
-            int firstNumber = pop(stack);
+            int firstNumber = pop(stack, &errorCode);
+            if (*errorCode != 0) {
+                return -1;
+            }
             if (isEmpty(stack)) {
                 printf("\nYou didn't add the second number");
                 *errorCode = -2;
-                deleteStack(stack);
-                return -0;
+                deleteStack(stack, &errorCode);
+                return -1;
             }
 
-            int secondNumber = pop(stack);
+            int secondNumber = pop(stack, &errorCode);
+            if (*errorCode != 0) {
+                return -1;
+            }
             if (symbol == '*') {
-                push(stack, secondNumber * firstNumber);
+                if (push(stack, secondNumber * firstNumber) != 0) {
+                    printf("No place for the value");
+                }
             }
             else if (symbol == '/') {
-                push(stack, secondNumber / firstNumber);
+                if (push(stack, secondNumber / firstNumber) != 0) {
+                    printf("No place for the value");
+                }
             }
             else if (symbol == '-') {
-                push(stack, secondNumber - firstNumber);
+                if (push(stack, secondNumber - firstNumber) != 0) {
+                    printf("No place for the value");
+                }
             }
             else if (symbol == '+') {
-                push(stack, secondNumber + firstNumber);
+                if (push(stack, secondNumber + firstNumber) != 0) {
+                    printf("No place for the value");
+                }
             } else {
                 *errorCode = -3;
-                deleteStack(stack);
+                deleteStack(stack, &errorCode);
                 return 0;
             }
         }
     }
 
-    return pop(stack);
+    if (!isEmpty(stack)) {
+        char answer = pop(stack, &errorCode);
+        deleteStack(stack, &errorCode);
+        return answer;
+    }
+    else {
+        free(stack);
+        return - 1;
+    }
 }
 
 bool wrongDataTest() {
     int length = WRONG_TEST_SIZE - 1;
     char expression[WRONG_TEST_SIZE] = "74]6-";
     int errorCode = 0;
-    Stack* stack = createStack();
-    int result = evaluateExpression(expression, length, stack, &errorCode);
-    if (errorCode != -3 || result != 0) {
-        return false;
-    }
-
-    return true;
+    int result = evaluateExpression(expression, length, &errorCode);
+    return errorCode == -3 && result == 0;
 }
 
 bool firstCorrectDataTest() {
     int length = FIRST_TEST_SIZE - 1;
     char expression[FIRST_TEST_SIZE] = "96+2*3/2-";
     int errorCode = 0;
-    Stack* stack = createStack();
-    int result = evaluateExpression(expression, length, stack, &errorCode);
+    int result = evaluateExpression(expression, length, &errorCode);
     if (errorCode != 0 || result != 8) {
         return false;
     }
 
-    deleteStack(stack);
     return true;
 }
 
@@ -84,31 +110,27 @@ bool secondCorrectDataTest() {
     int length = SECOND_TEST_SIZE - 1;
     char expression[SECOND_TEST_SIZE] = "96-12+*";
     int errorCode = 0;
-    Stack* stack = createStack();
-    int result = evaluateExpression(expression, length, stack, &errorCode);
+    int result = evaluateExpression(expression, length, &errorCode);
     if (errorCode != 0 || result != 9) {
         return false;
     }
 
-    deleteStack(stack);
     return true;
 }
 
 int main() {
     if (!wrongDataTest() || !firstCorrectDataTest() || !secondCorrectDataTest()) {
-        printf("\nThere are some problems in the programm :c");
+        printf("\nThere are some problems in the program :c");
         return -1;
     }
 
     int length = 0;
     int errorCode = 0;
-    Stack *stack = createStack();
-    printf("Enter the number of symbols: ");
-    scanf_s("%d", &length);
-    char* expression = (char*)malloc(length * sizeof(char) + 1);
-    printf("\nEnter the expression without spaces:");
-    scanf_s("%s", expression, (unsigned)sizeof(expression)*length);
-    int result = evaluateExpression(expression, length, stack, &errorCode);
+    char expression[MAX_LENGTH] = "";
+    printf("Enter the expression: ");
+    fgets(expression, MAX_LENGTH, stdin);
+    length = (int)strlen(expression) - 1;
+    int result = evaluateExpression(expression, length, &errorCode);
     if (errorCode == -3) {
         printf("Failed to recognize the symbol :c");
         return -1;
@@ -118,6 +140,5 @@ int main() {
     }
 
     printf("\nThe result of the expression is: %d", result);
-    deleteStack(stack);
-	return 0;
+    return 0;
 }

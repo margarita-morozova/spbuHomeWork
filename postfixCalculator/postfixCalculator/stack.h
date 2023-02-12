@@ -7,16 +7,16 @@ typedef struct Stack Stack;
 int push(Stack* stack, int element);
 
 // take one element from stack
-int pop(Stack* stack);
+int pop(Stack* stack, int* errorCode);
 
 // is stack empty?
 bool isEmpty(Stack* stack); 
 
 // create void stack
-Stack* createStack(void); 
+Stack* createStack(int* errorCode);
 
 // delete the whole stack
-void deleteStack(Stack* stack);
+void deleteStack(Stack* stack, int *errorCode);
 
 // to look at the first element of stack
-int top(Stack* stack); 
+int top(Stack* stack, int *errorCode);
