@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <stdbool.h>
 
 int main() {
 
@@ -15,14 +15,15 @@ int main() {
 
     printf("Prime numbers are: ");
     for (int i = 2; i <= number; ++i) {
-        int primeNumber = 1;
-        for (int devider = 2; devider <= round(pow(i, 0.5)); ++devider) {
-            if (i % devider == 0) {
-                primeNumber = 0;
+        bool isPrimeNumber = true;
+        for (int divider = 2; divider * divider <= i; ++divider) {
+            if (i % divider == 0) {
+                isPrimeNumber = false;
             }
         }
 
-        if (primeNumber) {
+
+        if (isPrimeNumber) {
             printf("%d ", i);
         }
     }
