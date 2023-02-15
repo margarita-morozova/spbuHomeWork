@@ -14,6 +14,7 @@ int main() {
         printf("Enter the second number : ");
         scanf_s("%d", &secondNumber);
     }
+
     if (abs(firstNumber) < abs(secondNumber)) {
         printf("%d", divider);
         return 0;
@@ -30,7 +31,12 @@ int main() {
             ++divider;
         }
     }
-
+    else if (firstNumber < secondNumber) {
+        while ((firstNumber < 0) || (firstNumber >= abs(secondNumber))) {
+            firstNumber += secondNumber;
+            --divider;
+        }
+    }
     else {
         while (firstNumber + secondNumber >= 0) {
             firstNumber += secondNumber;
@@ -39,6 +45,5 @@ int main() {
     }
 
     printf("%d", divider);
-
     return 0;
 }
