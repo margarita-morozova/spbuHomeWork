@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{58e2b219-9a35-457d-a3ec-30416476e3a9}</ProjectGuid>
-    <RootNamespace>advancedBracketBalance</RootNamespace>
+    <ProjectGuid>{87b1e374-5e2e-4d8a-84ee-c43ca9121a58}</ProjectGuid>
+    <RootNamespace>array</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -128,10 +128,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.c" />
-    <ClCompile Include="stack.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
