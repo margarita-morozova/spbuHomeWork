@@ -87,6 +87,8 @@ void timeCalculation(double* countingTime, double* bubbleTime) {
 
 	*countingTime = (double)(endingCounting - beginningCounting) / CLOCKS_PER_SEC;
 	*bubbleTime = (double)(endingBubble - beginningBubble) / CLOCKS_PER_SEC;
+	free(firstArray);
+	free(secondArray);
 }
 
 bool test(int size) {
@@ -101,10 +103,14 @@ bool test(int size) {
 	counting(secondTestArray, size);
 	for (int i = 0; i < size; i++) {
 		if (firstTestArray[i] != secondTestArray[i]) {
+			free(firstTestArray);
+			free(secondTestArray);
 			return false;
 		}
 	}
 
+	free(firstTestArray);
+	free(secondTestArray);
 	return true;
 }
 
