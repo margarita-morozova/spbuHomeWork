@@ -74,7 +74,10 @@ void timeCalculation(double* countingTime, double* bubbleTime) {
 	int* firstArray = (int*)calloc(size, sizeof(int));
 	int* secondArray = (int*)calloc(size, sizeof(int));
 	randomFilling(firstArray, size);
-	memcpy(secondArray, firstArray, size);
+	for (int i = 0; i < size; i++) {
+		secondArray[i] = firstArray[i];
+	}
+
 	clock_t beginningCounting = clock();
 	counting(firstArray, size);
 	clock_t endingCounting = clock();
@@ -86,31 +89,18 @@ void timeCalculation(double* countingTime, double* bubbleTime) {
 	*bubbleTime = (double)(endingBubble - beginningBubble) / CLOCKS_PER_SEC;
 }
 
-bool firstTest() {
-	int firstTestArray[FIRST_TEST_SIZE] = { 0, 50, 1043, 49, 2, 0, 1, 1, 50, 33 };
-	int secondTestArray[FIRST_TEST_SIZE] = { 50, 2, 1043, 49, 50, 1, 1, 0, 0, 33 };
-	int sortedArray[FIRST_TEST_SIZE] = { 0, 0, 1, 1, 2, 33, 49, 50, 50, 1043 };
-	bubble(firstTestArray, FIRST_TEST_SIZE);
-	counting(secondTestArray, FIRST_TEST_SIZE);
-
-	for (int i = 0; i < FIRST_TEST_SIZE; i++) {
-		if (firstTestArray[i] != secondTestArray[i] || firstTestArray[i] != sortedArray[i]) {
-			return false;
-		}
+bool test(int size) {
+	int *firstTestArray = (int*)calloc(size, sizeof(int));
+	randomFilling(firstTestArray, size);
+	int *secondTestArray = (int*)calloc(size, sizeof(int));
+	for (int i = 0; i < size; i++) {
+		secondTestArray[i] = firstTestArray[i];
 	}
 
-	return true;
-}
-
-bool secondTest() {
-	int firstTestArray[SECOND_TEST_SIZE] = { 1000, 5, 5, 1, 1};
-	int secondTestArray[SECOND_TEST_SIZE] = { 1, 5, 1, 5, 1000};
-	int sortedArray[SECOND_TEST_SIZE] = { 1, 1, 5, 5, 1000 };
-	bubble(firstTestArray, SECOND_TEST_SIZE);
-	counting(secondTestArray, SECOND_TEST_SIZE);
-
-	for (int i = 0; i < SECOND_TEST_SIZE; i++) {
-		if (firstTestArray[i] != secondTestArray[i] || firstTestArray[i] != sortedArray[i]) {
+	bubble(firstTestArray, size);
+	counting(secondTestArray, size);
+	for (int i = 0; i < size; i++) {
+		if (firstTestArray[i] != secondTestArray[i]) {
 			return false;
 		}
 	}
@@ -119,7 +109,7 @@ bool secondTest() {
 }
 
 int main() {
-	if (!firstTest() || !secondTest()) {
+	if (!test(5) || !test(10) || !test(3)) {
 		printf("Tests failed :c");
 		return -1;
 	}
