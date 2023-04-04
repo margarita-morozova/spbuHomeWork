@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define firstTestSize 10
-#define secondTestSize 5
-#define thirdTestSize 2
-#define fourthTestSize 4
-
 int* halfQSort(int* pointerToArray, int size)
 {
 	int indexOfSupportElement = 0;
