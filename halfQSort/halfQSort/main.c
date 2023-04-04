@@ -9,21 +9,36 @@
 
 int* halfQSort(int* pointerToArray, int size)
 {
-	int index = 0;
-	int supportElement = pointerToArray[0];
-	for (int i = 0; i < size; i++)
-	{
-		if (pointerToArray[i] < supportElement)
-		{
-			int temporaryPlace = pointerToArray[i];
-			for (int j = i; j > index; j--)
-			{
-				pointerToArray[j] = pointerToArray[j - 1];
-			}
-			pointerToArray[index] = temporaryPlace;
-			index++;
+	int indexOfSupportElement = 0;
+	int supportElement = pointerToArray[indexOfSupportElement];
+	int leftIndex = 1;
+	int rightIndex = size - 1;
+	while (leftIndex < rightIndex) {
+		while (pointerToArray[leftIndex] < supportElement) {
+			++leftIndex;
+		}
+
+		while (pointerToArray[rightIndex] >= supportElement) {
+			--rightIndex;
+		}
+
+		if (leftIndex >= rightIndex) {
+			break;
+		}
+
+		if (pointerToArray[leftIndex] >= supportElement && pointerToArray[rightIndex] < supportElement) {
+			int temporaryPlace = pointerToArray[leftIndex];
+			pointerToArray[leftIndex] = pointerToArray[rightIndex];
+			pointerToArray[rightIndex] = temporaryPlace;
 		}
 	}
+
+	if (pointerToArray[leftIndex] >= supportElement) {
+		--leftIndex;
+	}
+	
+	pointerToArray[indexOfSupportElement] = pointerToArray[leftIndex];
+	pointerToArray[leftIndex] = supportElement;
 
 	return pointerToArray;
 }
@@ -38,77 +53,36 @@ int* randomFilling(int* pointerToArray, int size)
 	return pointerToArray;
 }
 
-bool firstTest()
+bool test(int size)
 {
-	int testArray[firstTestSize] = { 10, 5, 7, 3, 9, 10, 45, 23, 7, 90 };
-	int rightArray[firstTestSize] = { 5, 7, 3, 9, 7, 10, 10, 45, 23, 90 };
-	bool isSortingRight = true;
-	halfQSort(testArray, firstTestSize);
-	for (int i = 0; i < firstTestSize; i++)
+	int* testArray = (int*)calloc(size, sizeof(int));
+	if (testArray == NULL)
 	{
-		if (testArray[i] != rightArray[i])
-		{
-			isSortingRight = false;
+		return -1;
+	}
+
+	randomFilling(testArray, size);
+	int supportElement = testArray[0];
+	bool isRightPartCorrect = false;
+	halfQSort(testArray, size);
+	for (int i = 0; i < size; i++)
+	{
+		if (testArray[i] >= supportElement) {
+			isRightPartCorrect = true;
+		}
+
+		if (isRightPartCorrect && testArray[i] < supportElement) {
+			isRightPartCorrect = false;
 		}
 	}
 
-	return isSortingRight;
-}
-
-bool secondTest()
-{
-	int testArray[secondTestSize] = { 1, 5, 3, 6, 7};
-	int rightArray[secondTestSize] = { 1, 5, 3, 6, 7 };
-	bool isSortingRight = true;
-	halfQSort(testArray, secondTestSize);
-	for (int i = 0; i < secondTestSize; i++)
-	{
-		if (testArray[i] != rightArray[i])
-		{
-			isSortingRight = false;
-		}
-	}
-
-	return isSortingRight;
-}
-
-bool thirdTest()
-{
-	int testArray[thirdTestSize] = { 2, -5};
-	int rightArray[thirdTestSize] = {-5, 2};
-	bool isSortingRight = true;
-	halfQSort(testArray, thirdTestSize);
-	for (int i = 0; i < thirdTestSize; i++)
-	{
-		if (testArray[i] != rightArray[i])
-		{
-			isSortingRight = false;
-		}
-	}
-
-	return isSortingRight;
-}
-
-bool fourthTest()
-{
-	int testArray[fourthTestSize] = { 1, 1, 1, 1};
-	int rightArray[fourthTestSize] = { 1, 1, 1, 1};
-	bool isSortingRight = true;
-	halfQSort(testArray, fourthTestSize);
-	for (int i = 0; i < fourthTestSize; i++)
-	{
-		if (testArray[i] != rightArray[i])
-		{
-			isSortingRight = false;
-		}
-	}
-
-	return isSortingRight;
+	free(testArray);
+	return isRightPartCorrect;
 }
 
 int main()
 {
-	if (!firstTest() || !secondTest() || !thirdTest() || !fourthTest())
+	if (!test(10) || !test(5) || !test(2) || !test(4))
 	{
 		printf("Tests failed :c");
 		return -1;
@@ -138,5 +112,6 @@ int main()
 		printf("%d ", firstArray[i]);
 	}
 	
+	free(firstArray);
 	return 0;
 }
