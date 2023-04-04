@@ -3,11 +3,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#define firstTestArraySize 10
-#define secondTestArraySize 7
-#define thirdTestArraySize 10
-#define fourthTestArraySize 9
-#define fifthTestArraySize 10
+#define FIRST_TEST_ARRAY_SIZE 10
+#define SECOND_TEST_ARRAY_SIZE 7
+#define THIRD_TEST_ARRAY_SIZE 10
+#define FOURTH_TEST_ARRAY_SIZE 9
+#define FIFTH_TEST_ARRAY_SIZE 10
 
 void qSort(int *originalArray, int size, int beginning, int ending)
 {
@@ -40,11 +40,7 @@ void qSort(int *originalArray, int size, int beginning, int ending)
 
 bool binarySearch(int *sortedArray, int beginning, int ending, int number)
 {
-	int middle = beginning + (ending - beginning) / 2;
-	if (beginning == ending)
-	{
-		middle = beginning;
-	}
+	const int middle = (ending + beginning) / 2;
 
 	if (beginning <= ending) {
 		if (sortedArray[middle] == number)
@@ -75,10 +71,10 @@ int* randomFilling(int* pointerToArray, int size)
 
 bool firstTestSorting()
 {
-	int testArray[firstTestArraySize] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-	int rightArray[firstTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-	qSort(testArray, firstTestArraySize, 0, firstTestArraySize - 1);
-	for (int i = 0; i < firstTestArraySize; i++)
+	int testArray[FIRST_TEST_ARRAY_SIZE] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+	int rightArray[FIRST_TEST_ARRAY_SIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	qSort(testArray, FIRST_TEST_ARRAY_SIZE, 0, FIRST_TEST_ARRAY_SIZE - 1);
+	for (int i = 0; i < FIRST_TEST_ARRAY_SIZE; i++)
 	{
 		if (testArray[i] != rightArray[i])
 		{
@@ -91,10 +87,10 @@ bool firstTestSorting()
 
 bool secondTestSorting()
 {
-	int testArray[secondTestArraySize] = {4, 6, 3, 5, 2, 1, 7};
-	int rightArray[secondTestArraySize] = { 1, 2, 3, 4, 5, 6, 7};
-	qSort(testArray, secondTestArraySize, 0, secondTestArraySize - 1);
-	for (int i = 0; i < secondTestArraySize; i++)
+	int testArray[SECOND_TEST_ARRAY_SIZE] = {4, 6, 3, 5, 2, 1, 7};
+	int rightArray[SECOND_TEST_ARRAY_SIZE] = { 1, 2, 3, 4, 5, 6, 7};
+	qSort(testArray, SECOND_TEST_ARRAY_SIZE, 0, SECOND_TEST_ARRAY_SIZE - 1);
+	for (int i = 0; i < SECOND_TEST_ARRAY_SIZE; i++)
 	{
 		if (testArray[i] != rightArray[i])
 		{
@@ -107,35 +103,25 @@ bool secondTestSorting()
 
 bool firstTestSearching()
 {
-	int testArray[thirdTestArraySize] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int testArray[THIRD_TEST_ARRAY_SIZE] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	int neededNumber = 9;
-	if (binarySearch(testArray, 0, thirdTestArraySize - 1, neededNumber))
-	{
-		return true;
-	}
-
-	return false;
+	return binarySearch(testArray, 0, THIRD_TEST_ARRAY_SIZE - 1, neededNumber);
 }
 
 bool secondTestSearching()
 {
-	int testArray[fourthTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8};
+	int testArray[FOURTH_TEST_ARRAY_SIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8};
 	int neededNumber = 9;
-	if (!binarySearch(testArray, 0, fourthTestArraySize - 1, neededNumber))
-	{
-		return true;
-	}
-
-	return false;
+	return !binarySearch(testArray, 0, FOURTH_TEST_ARRAY_SIZE - 1, neededNumber);
 }
 
 bool testOfBothFunctions()
 {
-	int testArray[fifthTestArraySize] = {8, 3, 2, 1, 4, 5, 6, 7, 0, 9};
-	int rightArray[fifthTestArraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int testArray[FIFTH_TEST_ARRAY_SIZE] = {8, 3, 2, 1, 4, 5, 6, 7, 0, 9};
+	int rightArray[FIFTH_TEST_ARRAY_SIZE] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 	int neededNumber = 9;
-	qSort(testArray, fifthTestArraySize, 0, fifthTestArraySize - 1);
-	for (int i = 0; i < fifthTestArraySize; i++)
+	qSort(testArray, FIFTH_TEST_ARRAY_SIZE, 0, FIFTH_TEST_ARRAY_SIZE - 1);
+	for (int i = 0; i < FIFTH_TEST_ARRAY_SIZE; i++)
 	{
 		if (testArray[i] != rightArray[i])
 		{
@@ -143,7 +129,7 @@ bool testOfBothFunctions()
 		}
 	}
 
-	if (!binarySearch(testArray, 0, fifthTestArraySize, neededNumber))
+	if (!binarySearch(testArray, 0, FIFTH_TEST_ARRAY_SIZE, neededNumber))
 	{
 		return false;
 	}
@@ -189,6 +175,7 @@ int main()
 	int* arrayOfIntegers = (int*)calloc(numberOfIntegers, sizeof(int));
 	if (arrayOfIntegers == NULL)
 	{
+		free(firstArray);
 		printf("\nmemory is not found :c");
 		return -1;
 	}
@@ -218,5 +205,7 @@ int main()
 		}
 	}
 
+	free(arrayOfIntegers);
+	free(firstArray);
 	return 0;
 }
