@@ -37,13 +37,14 @@ int push(List* list, int value) {
 	}
 
 	if (current->nextElement == list->head) {
-		current->nextElement = calloc(1, sizeof(Node));
-		if (current->nextElement == NULL) {
-			return -2;
+		Node* newPlace = calloc(1, sizeof(Node));
+		if (newPlace == NULL) {
+			return -1;
 		}
 
-		current->nextElement->nextElement = list->head;
-		current->nextElement->value = value;
+		newPlace->nextElement = list->head;
+		newPlace->value = value;
+		current->nextElement = newPlace;
 		return 0;
 	}
 
@@ -57,18 +58,17 @@ int deleteValue(List* list, int value) {
 
 	Node* current = list->head;
 	Node* previous = calloc(1, sizeof(Node));
-	while (current->value != value) {
+	if (current->value == current->nextElement->value) {
+		return 1;
+	}
+
+	for (int i = 0; i < value; i++) {
 		previous = current;
 		current = current->nextElement;
 	}
 
-	if (current == list->head) {
-		list->head = current->nextElement;
-	}
-	else {
-		previous->nextElement = current->nextElement;
-	}
-
+	list->head = current->nextElement;
+	previous->nextElement = current->nextElement;
 	free(current);
 	return 0;
 }
@@ -84,11 +84,12 @@ int printList(List* list) {
 	}
 
 	Node* current = list->head;
-	printf("Needed position is: ");
-	while (current != NULL) {
-		printf("%d ", current->value);
-		current = current->nextElement;
-	}
-
+	printf("Needed position is: %d", current->value);
 	return 0;
+}
+
+bool isRightAnswer(int rightAnswer, List* list) {
+	int answer = list->head->value;
+	deleteList(list);
+	return rightAnswer == answer;
 }
