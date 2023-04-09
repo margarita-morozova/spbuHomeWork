@@ -1,7 +1,8 @@
-#include <stdio.h>
+#include "cyclicList.h"
 
-int main() {
-	printf("Hello world!");
-	
+#include <stdio.h>
+#include <stdbool.h>
+
+bool main() {
 	return 0;
 }
