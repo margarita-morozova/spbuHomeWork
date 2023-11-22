@@ -68,7 +68,7 @@ int printToFile(phoneBook* phoneBook, const char* file) {
 	FILE* newFile = fopen(file, "w");
 	if (newFile == NULL) {
 		fclose(newFile);
-		return -1;
+		return -2;
 	}
 
 	Node* current = phoneBook->head;
@@ -80,7 +80,7 @@ int printToFile(phoneBook* phoneBook, const char* file) {
 	while (current != NULL) {
 		if (fprintf(newFile, "%s - %s\n", current->name, current->phoneNumber) < 0) {
 			fclose(newFile);
-			return -2;
+			return -3;
 		}
 
 		current = current->nextElement;

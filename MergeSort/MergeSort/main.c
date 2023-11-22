@@ -1,3 +1,5 @@
+#include "phoneBook.h"
+
 #include <stdio.h>
 #include <stdbool.h>
 
