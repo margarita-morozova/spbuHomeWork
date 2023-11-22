@@ -35,5 +35,7 @@ void split(struct Node* phoneBook, struct Node** firstHalf, struct Node** second
 struct Node* sortedMerge(struct Node* firstHalf, struct Node* secondHalf, bool isSortedByName);
 
 // Uses merge sort on the list.
-void mergeSort(struct Node** phoneBook, bool isSortedByName);
+int realMergeSort(struct phoneBook** phoneBook, bool isSortedByName);
 
+// Takes the first node from the phone book.
+void mergeSort(struct phoneBook* phoneBook, bool isSortedByName);

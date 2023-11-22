@@ -33,19 +33,21 @@ int push(phoneBook* phoneBook, char name[], char phoneNumber[]) {
 
 		strcpy(phoneBook->head->name, name);
 		strcpy(phoneBook->head->phoneNumber, phoneNumber);
+		phoneBook->head->nextElement = NULL;
 	}
-
+	current = phoneBook->head;
 	while (current->nextElement != NULL) {
 		current = current->nextElement;
 	}
 
-	current->nextElement = calloc(1, sizeof(1, phoneBook));
+	current->nextElement = calloc(1, sizeof(Node));
 	if (current->nextElement == NULL) {
 		return -2;
 	}
 
 	strcpy(current->nextElement->name, name);
 	strcpy(current->nextElement->phoneNumber, phoneNumber);
+	current->nextElement->nextElement = NULL;
 	return 0;
 }
 
@@ -55,12 +57,13 @@ void deleteBook(phoneBook* phoneBook) {
 	}
 
 	Node* current = phoneBook->head;
-	while (current != NULL) {
+	while (current != NULL && current->nextElement != NULL) {
 		Node* placeToDelete = current;
 		current = current->nextElement;
 		free(placeToDelete);
 	}
 
+	free(current);
 	free(phoneBook);
 }
 
@@ -71,14 +74,14 @@ int printToFile(phoneBook* phoneBook, const char* file) {
 		return -2;
 	}
 
-	Node* current = phoneBook->head;
+	Node* current = phoneBook->head->nextElement;
 	if (current == NULL) {
 		fclose(newFile);
 		return -1;
 	}
 
 	while (current != NULL) {
-		if (fprintf(newFile, "%s - %s\n", current->name, current->phoneNumber) < 0) {
+		if (fprintf(newFile, "%s- %s\n", current->name, current->phoneNumber) < 0) {
 			fclose(newFile);
 			return -3;
 		}
@@ -96,11 +99,11 @@ int readFile(phoneBook* phoneBook, const char* file) {
 	}
 
 	char lineFromFile[MAX_LENGTH] = "";
-	while (fgets(lineFromFile, MAX_LENGTH, newFile) != NULL) {
-		char* token = strtok(lineFromFile, " - ");
+	while (fgets(lineFromFile, MAX_LENGTH, newFile) != NULL){
+		char* token = strtok(lineFromFile, "-");
 		char name[MAX_LENGTH] = "";
 		strcpy(name, token);
-		token = strtok(NULL, " - ");
+		token = strtok(NULL, " - \n");
 		char phoneNumber[MAX_LENGTH] = "";
 		strcpy(phoneNumber, token);
 		push(phoneBook, name, phoneNumber);
@@ -111,26 +114,22 @@ int readFile(phoneBook* phoneBook, const char* file) {
 }
 
 bool isFirstBigger(char firstNumber[], char secondNumber[]) {
-	if (strcmp(firstNumber, secondNumber) >= 0) {
-		return true;
-	} else {
-		return false;
-	}
+	return strcmp(firstNumber, secondNumber) >= 0;
 }
 
 void split(Node* phoneBook, Node** firstHalf, Node** secondHalf) {
 	Node* slowPointer = phoneBook;
 	Node* fastPointer = phoneBook->nextElement;
-	while (fastPointer != NULL) {
+	while (fastPointer->nextElement != NULL) {
 		fastPointer = fastPointer->nextElement;
-		if (fastPointer != NULL) {
+		if (fastPointer->nextElement != NULL) {
 			slowPointer = slowPointer->nextElement;
 			fastPointer = fastPointer->nextElement;
 		}
 	}
 
-	*firstHalf = phoneBook;
-	*secondHalf = slowPointer->nextElement;
+	(*firstHalf) = phoneBook;
+	(*secondHalf) = slowPointer->nextElement;
 	slowPointer->nextElement = NULL;
 }
 
@@ -167,8 +166,8 @@ Node* sortedMerge(Node* firstHalf, Node* secondHalf, bool isSortedByName) {
 	return result;
 }
 
-void mergeSort(Node** phoneBook, bool isSortedByName) {
-	if ((* phoneBook) == NULL || (* phoneBook)->nextElement == NULL) {
+void realMergeSort(Node** phoneBook, bool isSortedByName) {
+	if ((*phoneBook) == NULL || (*phoneBook)->nextElement == NULL) {
 		return;
 	}
 
@@ -176,9 +175,13 @@ void mergeSort(Node** phoneBook, bool isSortedByName) {
 	Node* secondHalf = NULL;
 
 	split(*phoneBook, &firstHalf, &secondHalf);
-	mergeSort(&firstHalf, isSortedByName);
-	mergeSort(&secondHalf, isSortedByName);
+
+	realMergeSort(&firstHalf, isSortedByName);
+	realMergeSort(&secondHalf, isSortedByName);
 
 	(*phoneBook) = sortedMerge(firstHalf, secondHalf, isSortedByName);
 }
 
+void mergeSort(phoneBook* phoneBook, bool isSortedByName) {
+	realMergeSort(&(phoneBook->head->nextElement), isSortedByName);
+}
