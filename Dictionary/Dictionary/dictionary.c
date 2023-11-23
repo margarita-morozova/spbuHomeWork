@@ -18,6 +18,60 @@ Dictionary* createDictionary() {
 	return calloc(1, sizeof(Dictionary));
 }
 
+Node* leftMostChildByNode(Node* node, int key) {
+	while (node->leftChild != NULL) {
+		node = node->leftChild;
+	}
+
+	return node;
+}
+
+Node* leftMostChild(int key, Dictionary* dictionary) {
+	return leftMostChildByNode(dictionary->root, key);
+}
+
+Node* deleteValueByNode(Node* node, int key) {
+	if (node == NULL) {
+		return node;
+	}
+
+	if (key < node->key) {
+		deleteValueByNode(node->leftChild, key);
+	}
+	else if (key > node->key) {
+		deleteValueByNode(node->rightChild, key);
+	}
+	else if (node->leftChild != NULL && node->rightChild != NULL) {
+		Node* rightChild = node->rightChild;
+		Node* newNode = leftMostChildByNode(node, rightChild->key);
+		node->key = newNode->key;
+		node->rightChild = deleteValueByNode(node->rightChild, node->key);
+	}
+	else if (node->leftChild != NULL) {
+		node = node->leftChild;
+	}
+	else if (node->rightChild != NULL) {
+		node = node->rightChild;
+	}
+	else {
+		node = NULL;
+	}
+
+	return node;
+}
+
+void deleteValue(Dictionary* dictionary, int key) {
+	deleteValueByNode(dictionary->root, key);
+}
+
+void deleteDictionary(Dictionary* dictionary) {
+	while (dictionary->root != NULL) {
+		deleteValueByNode(dictionary->root, dictionary->root->key);
+	}
+
+	free(dictionary->root);
+}
+
 int addNodeByNode(int key, char* value, Node* node) {
 	if (node == NULL) {
 		return -1;
@@ -96,48 +150,6 @@ bool isKeyInDictionaryByNode(Dictionary* dictionary, int key) {
 	return false;
 }
 
-Node* leftMostChildByNode(Node* node, int key) {
-	while (node->leftChild != NULL) {
-		node = node->leftChild;
-	}
-
-	return node;
-}
-
-Node* leftMostChild(int key, Dictionary* dictionary) {
-	return leftMostChildByNode(dictionary->root, key);
-}
-
-Node* deleteValueByNode(Node* node, int key) {
-	if (node == NULL) {
-		return node;
-	}
-
-	if (key < node->key) {
-		deleteValueByNode(node->leftChild, key);
-	} else if (key > node->key) {
-		deleteValueByNode(node->rightChild, key);
-	} else if (node->leftChild != NULL && node->rightChild != NULL) {
-		Node* rightChild = node->rightChild;
-		Node* newNode = leftMostChildByNode(node, rightChild->key);
-		node->key = newNode->key;
-		node->rightChild = deleteValueByNode(node->rightChild, node->key);
-	} else if (node->leftChild != NULL) {
-		node = node->leftChild;
-	} else if (node->rightChild != NULL) {
-		node = node->rightChild;
-	}
-	else {
-		node = NULL;
-	}
-
-	return node;
-}
-
-int deleteValue(Dictionary* dictionary, int key) {
-	return deleteValueByNode(dictionary->root, key);
-}
-
 Node* parentByNode(Node* currentNode, int key) {
 	Node* rightChild = currentNode->rightChild;
 	Node* leftChild = currentNode->leftChild;
@@ -155,12 +167,4 @@ Node* parentByNode(Node* currentNode, int key) {
 
 Node* parent(Dictionary* dictionary, int key) {
 	return parentByNode(dictionary->root, key);
-}
-
-int deleteDictionary(Dictionary* dictionary) {
-	while (dictionary->root != NULL) {
-		deleteValueByNode(dictionary->root, dictionary->root->key);
-	}
-
-	free(dictionary->root);
 }
